@@ -1,90 +1,99 @@
-# DigiSaatBara : Geo-fencing and Efficient Crop Prediction for farmers using land Documents
+# DigiSaatBaara — Geofencing & Crop Prediction for Farmers
 
+> Civic Tech · AgriTech · IEEE Published · 2021
 
-The Goverment Documents like Saat Bara Documenents and Soil Health Card contain large amount of Unstructured Data. These data can be made to put to use for the Usage of Farmers
+End-to-end platform that digitises **Saat Baara** land documents (Maharashtra's official land records) to enable GPS-based geofencing of farmland and ML-driven crop prediction. Government admins upload land records; farmers get tailored crop recommendations and cost analysis on a web dashboard.
 
-![Flow](images/flow.jpg)
+**📄 IEEE Published**  
+👉 [Geofencing and Efficient Crop Prediction Using Government Documents — IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/9708082)
 
-<br><br>
-<img src="https://github.com/naidukarthi2193/bytecamp_KTV/blob/master/images/saatbara.jpg" align="right"
-width="300" height="400">
+## Highlights
+- Parses unstructured government land documents to extract structured soil + crop history data
+- Geofences land parcels using GPS coordinates with ±2% area tolerance
+- Crop prediction ML model trained on regional soil health card data
+- Full stack: Android app (data collection) + Flask web app (analysis + dashboard)
 
+## Architecture
+```
+Android App (Farmer / Admin)
+       │
+  GPS Geofencing + Document Upload
+       │
+  Flask Backend (Python)
+       │
+  ┌────┴──────────────────┐
+  │                       │
+Crop Prediction        Rainfall Analysis
+(scikit-learn)         (historical CSV data)
+  │                       │
+  └────────┬──────────────┘
+           │
+    Plotly Dashboard       ← interactive charts for farmers
+```
 
-The SaatBaara Documents contain detailed reports of the following factors in land usage
+---
 
-- Total Area of Land
-- Land Under Cultivation (Per Crop Season)
-  - Crop Season
-  - Crop Cultivated
-  - Area Cultivated (In Hectares)
-  - Irrigation Water Source
-  - Irrigated Area (In Hectares)
-  - Mixed Crop / Single Crop
-- Land Not Available For Cultivation 
-  - Area not cultivated (In Hectares) 
-  - Usage 
-  - Irrigation Equipment
-- Land Landmarks for Demarcation
-<br>
-<br>
+## Setup & Running
 
+### Web App (Flask)
 
-The Soil  Health Card Provides complete information about the Soil Contents 
-<br>
-
-<img src="images/soil.jpg" align="center">
-
-
-The project focuses on creation of the entire system for data collection and generating detailed reports after data analysis from the collected and predicted data. <p>
-The approach consists of a mobile app and a website which has two users the government admin and landholders. The main focus of the application is extracting information from 7 / 12 for geofencing of land and crop prediction for farmers and generating a final report for landholders which contains</p>
-
- - Information about the land 
- - Soil health card of the land 
- - History of the crops grown on the land 
- - Prediction of crops that can be grown 
- - Analysis of the costs incurred for each predictions 
- - Area circumscribed by the geo-fence coordinates on the map
-  
-
-## Android App
- Our Android uses Google SDKs for Marking the Geo Coordinates of the Land from the Users 
-<p align="left">
- <img src="images/app1.jpg"   align="center" width="200" height="400"> 
- <img src="images/app3.jpg"   align="center" width="200" height="400">
- <img src="images/app2.jpg"   align="center" width="200" height="400">
- </p>
-
- To Reduce False Inputs the Area Marked in the Polygon should be within  ~2% of the Area mentioned in the Land Documents
-
-## Web App
-
-The Crop Prediction helps the Farmers to get an Idea of the Resources requirements of the Farmers
-
->To install the requirements of Environment 
+#### 1. Clone & Install
 ```bash
+git clone https://github.com/tsenthil5/DigiSaatBaara
+cd DigiSaatBaara/WebApp
 pip install -r requirements.txt
 ```
 
-To Run the Flask Environment 
+> Requires Python 3.8+.
+
+#### 2. Run the Server
 ```bash
-python3 main.py
+python main.py
 ```
-The Server starts and go to localhost:5000
-```bash
-* Serving Flask app "main" (lazy loading)
-* Environment: production
-WARNING: This is a development server. Do not use it in a production deployment.
-   Use a production WSGI server instead.
-* Debug mode: on
-* Restarting with stat
-* Debugger is active!
-* Debugger PIN: 822-438-218
-* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
- ```
 
-The Predictions will be shown in the website which will be easily interpreted by the farmer
-<br>
+Open your browser at: **http://localhost:5000**
 
-![](images/pred1.jpg)
-![](images/pred2.jpg)
+The server will start and show:
+```
+* Running on http://127.0.0.1:5000/
+```
 
+> To enable debug mode: `FLASK_DEBUG=true python main.py`
+
+#### 3. What you'll see
+- Crop prediction form — enter soil/land details to get crop recommendations
+- Rainfall analysis charts — seasonal rainfall trends by region
+- Cost analysis per predicted crop
+
+---
+
+### Android App
+
+The Android app was built for data collection in the field (GPS geofencing + document upload). APK and source are in the `Android_App/` folder. Open in Android Studio to build.
+
+---
+
+## Data Files Included
+
+All CSV data files are included in the repo — no external downloads required:
+
+| File | Contents |
+|---|---|
+| `crop_prediction.xlsx` | Training data for crop prediction model |
+| `rainfall_dataset.csv` | Full rainfall dataset |
+| `rain_jf.csv` | Jan–Feb seasonal rainfall |
+| `rain_jjas.csv` | Jun–Sep (monsoon) rainfall |
+| `rain_mam.csv` | Mar–May seasonal rainfall |
+| `rain_ons.csv` | Oct–Nov seasonal rainfall |
+
+---
+
+## Tech Stack
+`Python` `Flask` `scikit-learn` `Plotly` `Pandas` `NumPy` `Android` `Google Maps SDK`
+
+## Citation
+```
+S. Thanneermalai, et al.,
+"Geofencing and Efficient Crop Prediction Using Government Documents,"
+IEEE ICACC 2021. https://ieeexplore.ieee.org/abstract/document/9708082
+```
